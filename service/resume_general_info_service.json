@@ -1,5 +1,5 @@
 {
-  name: "gnp",
+  "name": "gnp",
   "git_url" : "https://github.com/gnpark2",
-   "introduction" : "안녕하세요. 잘부탁드립니다."
+  "introduction" : "안녕하세요. 잘부탁드립니다."
 }
