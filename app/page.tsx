@@ -39,16 +39,17 @@ export default async function Home() {
           <li className="mb-2 tracking-[-.01em]">
             안녕하세요{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              신입개발자 {data.name}입니다
-              git url : {data.git_url}
+              신입개발자 {data.name}입니다<br/>
+              git url : {data.git_url}<br/>
 	      {data.introduction}    
 	</code>
             .
           </li>
           <li className="tracking-[-.01em]">
-            {portfolioData.title}
             열심히 해보겠습니다.
           </li>
+			<br/>
+            {portfolioData.title}
         </ol>
 {/*
         <div className="flex gap-4 items-center flex-col sm:flex-row">
