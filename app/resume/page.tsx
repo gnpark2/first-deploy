@@ -12,7 +12,8 @@ async function getResumeInfo() {
 }
 
 async function getportfolioInfo() {
-  const res = await fetch('https://raw.githubusercontent.com/gnpark2/first-deploy/refs/heads/main/service/resume_portfolio_service.json');
+  const res = await fetch('https://raw.githubusercontent.com/gnpark2/first-deploy/refs/heads/main/service/resume_portfolio_service.json'
+    ,{ cache: 'no-store' });
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -53,7 +54,8 @@ export default async function ResumePage() {
             <div className="flex-1">
               <ul className="space-y-3 text-gray-700">
                 <li>
-                  <span className="font-medium">이름 :</span> {resumeInfo.name}
+                  <span className="font-medium">이름 :</span>{" "}
+                  <span className="font-bold text-gray-900">{resumeInfo.name}</span>
                 </li>
                 <li>
                   <span className="font-medium">자기소개 :</span>{" "}
@@ -86,37 +88,51 @@ export default async function ResumePage() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">
             📑프로젝트
           </h2>
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition">
-            <ul>
-              <li>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  {portfolioInfo.CNS_title}
-                </h3>
-              </li>
-              <li>
-                <p className="text-gray-700 mb-4">
-                  {portfolioInfo.CNS_sub_title}
-                </p>
-              </li>
-              <li>
-                <a
-                  href={portfolioInfo.CNS_project}
-                  target="_blank"
-                  className="inline-block px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-gray-500 transition"
-                >
-                  📂 WeFit
-                </a>
-              </li>
-            </ul>
-            &nbsp;&nbsp;
-            {/* <a
-              href={portfolioInfo.project_fe_github_url}
-              target="_blank"
-              className="inline-block px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-gray-800 transition"
-            >
-              📂 GitHub FE Repository
-            </a> */}
-          </div>
+
+          {(() => {
+            const list =
+              (Array.isArray(portfolioInfo.projects) && portfolioInfo.projects.length > 0
+                ? portfolioInfo.projects
+                : Array.isArray(portfolioInfo.urls) && portfolioInfo.urls.length > 0
+                ? portfolioInfo.urls
+                : []) as Array<{
+                  title: string;
+                  sub_title?: string;
+                  description?: string;
+                  url?: string;
+                }>;
+
+            return list.length > 0 ? (
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {list.map((item, idx) => (
+                  <li
+                    key={`${item.title}-${idx}`}
+                    className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition"
+                  >
+                    <h3 className="text-xl font-bold text-gray-900">{item.title}</h3>
+                    {item.sub_title && (
+                      <p className="text-sm text-gray-600 mt-1">{item.sub_title}</p>
+                    )}
+                    {item.description && (
+                      <p className="text-gray-700 mt-3">{item.description}</p>
+                    )}
+                    {item.url && (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 inline-block px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-gray-500 transition"
+                      >
+                        📂 프로젝트 보기
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">등록된 프로젝트가 없습니다.</p>
+            );
+          })()}
         </section>
 
         {/* Educations */}
